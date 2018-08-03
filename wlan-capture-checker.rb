@@ -4,6 +4,7 @@ class WlanCaptureChecker
   def initialize ifnames, duration=10
     @ifnames = ifnames.split(",").map{|elm| if elm.empty? then nil else elm end}.compact
     @duration = duration.to_i
+    STDERR.puts "ifnames = #{ifnames}, duration = #{duration}"
     check_privilege
     @ifnames.each do |ifname|
       init_device(ifname)
