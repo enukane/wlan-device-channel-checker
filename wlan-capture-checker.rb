@@ -73,6 +73,7 @@ end
 
 if __FILE__ == $0
   ifnames = ARGV.shift
-  channel = ARGV.shift
+  channel = ARGV.shift || 10
   checker = WlanCaptureChecker.new(ifnames, channel)
+  checker.run
 end
