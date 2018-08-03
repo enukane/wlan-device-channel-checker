@@ -22,14 +22,14 @@ class WlanCaptureChecker
   def generate_filename ifname
     now = Time.now.strftime("%Y%m%d-%H%M%S")
     name = "#{now}.#{ifname}.pcapng"
-    system("touch #{name}")
-    system("chmod +w #{name}")
+    execute_cmd("touch #{name}")
+    execute_cmd("chmod +w #{name}")
 
     return name
   end
 
   def run_tshark ifname, fname
-    system("tshark -i #{ifname} -w #{fname} -a duration:#{duration}")
+    execute_cmd("tshark -i #{ifname} -w #{fname} -a duration:#{duration}")
   end
 
   def run
@@ -64,6 +64,10 @@ class WlanCaptureChecker
     unless execute_cmd("ip link set #{ifname} up")
       raise "failed to turn up #{ifname}"
     end
+  end
+
+  def execute_cmd str
+    return system("#{str} 2>/dev/null")
   end
 end
 
