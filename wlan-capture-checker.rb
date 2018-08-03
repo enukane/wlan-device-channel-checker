@@ -29,6 +29,7 @@ class WlanCaptureChecker
   end
 
   def run_tshark ifname, fname
+    STDERR.puts "start capturing #{ifname} to '#{fname}'"
     execute_cmd("tshark -i #{ifname} -w #{fname} -a duration:#{@duration}")
   end
 
