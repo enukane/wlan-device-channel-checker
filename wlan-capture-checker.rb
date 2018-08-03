@@ -29,7 +29,7 @@ class WlanCaptureChecker
   end
 
   def run_tshark ifname, fname
-    execute_cmd("tshark -i #{ifname} -w #{fname} -a duration:#{duration}")
+    execute_cmd("tshark -i #{ifname} -w #{fname} -a duration:#{@duration}")
   end
 
   def run
