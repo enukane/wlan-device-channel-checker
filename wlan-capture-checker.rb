@@ -1,8 +1,9 @@
 require "json"
 
 class WlanCaptureChecker
-  def initialize ifnames, duration=10
+  def initialize ifnames, channel=36, duration=10
     @ifnames = ifnames.split(",").map{|elm| if elm.empty? then nil else elm end}.compact
+    @channel = channel.to_i
     @duration = duration.to_i
     STDERR.puts "ifnames = #{ifnames}, duration = #{duration}"
     check_privilege
@@ -66,6 +67,10 @@ class WlanCaptureChecker
     unless execute_cmd("ip link set #{ifname} up")
       raise "failed to turn up #{ifname}"
     end
+
+    unless execute_cmd("iw #{ifname} set channel #{@channel}")
+      raise "failed to set #{ifname} to channel #{@channel}"
+    end
   end
 
   def execute_cmd str
@@ -75,7 +80,8 @@ end
 
 if __FILE__ == $0
   ifnames = ARGV.shift
-  channel = ARGV.shift || 10
-  checker = WlanCaptureChecker.new(ifnames, channel)
+  channel = ARGV.shift || 36
+  duration = ARGV.shift || 10
+  checker = WlanCaptureChecker.new(ifnames, channel, duration)
   checker.run
 end
